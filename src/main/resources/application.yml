@@ -1,0 +1,25 @@
+server:
+  port: 8088
+
+logging:
+  level:
+    org.springframework: DEBUG
+
+spring:
+  messages:
+    basename: messages
+  mvc:
+    view:
+      prefix: "/WEB-INF/views/"
+      suffix: ".jsp"
+  security:
+    user:
+      name: username
+      password: passw0rd
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
