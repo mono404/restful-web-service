@@ -4,6 +4,7 @@ server:
 logging:
   level:
     org.springframework: DEBUG
+  file:
 
 spring:
   messages:
@@ -12,6 +13,11 @@ spring:
     view:
       prefix: "/WEB-INF/views/"
       suffix: ".jsp"
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 200MB
+      max-request-size: 215MB
 
 management:
   endpoints:
@@ -19,3 +25,5 @@ management:
       exposure:
         include: "*"
 
+file:
+  upload-dir:"Users\user\IdeaProjects\restful-web-service"
