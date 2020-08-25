@@ -12,10 +12,6 @@ spring:
     view:
       prefix: "/WEB-INF/views/"
       suffix: ".jsp"
-  security:
-    user:
-      name: username
-      password: passw0rd
 
 management:
   endpoints:
