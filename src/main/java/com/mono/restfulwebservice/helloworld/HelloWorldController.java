@@ -2,12 +2,11 @@ package com.mono.restfulwebservice.helloworld;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.HttpServletBean;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
 
 @RestController
@@ -42,9 +41,17 @@ public class HelloWorldController {
         return messageSource.getMessage("greeting.message", null, locale);
     }
 
-//    @GetMapping(path = "/home")
-//    public ModelAndView home() {
-//        ModelAndView mav = new ModelAndView("home");
-//        return mav;
-//    }
+    @GetMapping(path = "/hello-world/test")
+    public ModelAndView test() {
+        ModelAndView modelAndView = new ModelAndView("helloworldtest");
+        return modelAndView;
+    }
+
+    @PostMapping(path = "/hello-world/submit")
+    public String submit(HttpServletRequest req) {
+        String name = req.getParameter("names");
+        String number = req.getParameter("number");
+
+        return "이름은 " + name + " 번호는 " + number + " 입니다.";
+    }
 }

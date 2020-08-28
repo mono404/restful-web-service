@@ -8,22 +8,31 @@ import com.google.cloud.speech.v1.SpeechClient;
 import com.google.cloud.speech.v1.SpeechRecognitionAlternative;
 import com.google.cloud.speech.v1.SpeechRecognitionResult;
 import com.google.protobuf.ByteString;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class SpeechToText {
 
-public class test {
-    public String Stt(String filename) throws Exception
+    String file;
+
+    private String Stt(String filename) throws Exception
     {
-        System.out.println("tlqkf");
+        System.out.println("시작");
         // Instantiates a client
         try (SpeechClient speechClient = SpeechClient.create()) {
 
             // The path to the audio file to transcribe
-            String fileName = "./test6.raw";
-
+            String fileName = filename;
+            System.out.println("경로설정" + fileName);
             // Reads the audio file into memory
             Path path = Paths.get(fileName);
             byte[] data = Files.readAllBytes(path);
@@ -40,6 +49,7 @@ public class test {
             RecognizeResponse response = speechClient.recognize(config, audio);
             List<SpeechRecognitionResult> results = response.getResultsList();
 
+            System.out.println("테스트");
             for (SpeechRecognitionResult result : results) {
                 // There can be several alternative transcripts for a given chunk of speech.
                 // Just use the
@@ -53,4 +63,7 @@ public class test {
         return null;
     }
 
+    public String getMessage() throws Exception {
+        return Stt(file);
+    }
 }

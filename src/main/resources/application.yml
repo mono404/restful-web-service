@@ -4,6 +4,7 @@ server:
 logging:
   level:
     org.springframework: DEBUG
+    org.springframework.web: DEBUG
   file:
 
 spring:
@@ -18,12 +19,25 @@ spring:
       enabled: true
       max-file-size: 200MB
       max-request-size: 215MB
+  http:
+    log-request-details: true
 
 management:
   endpoints:
     web:
       exposure:
         include: "*"
-
 file:
-  upload-dir:"Users\user\IdeaProjects\restful-web-service"
+  upload-dir: "./upload"
+
+
+#구글 앱 엔진용 설정
+runtime: java
+env: flex
+
+handlers:
+  url: /.*
+  script: this field is required, but ignored
+
+env_variables:
+  BUCKET_NAME: mono_jung

@@ -15,6 +15,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
 public class UserController {
+
     private UserDaoService service;
 
     public UserController(UserDaoService service) {
