@@ -8,25 +8,22 @@
     <title> Mono's </title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="manifest" href="site.webmanifest">
     <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
 
     <!-- CSS here -->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
     <link rel="stylesheet" href="assets/css/slicknav.css">
-    <link rel="stylesheet" href="assets/css/flaticon.css">
-    <link rel="stylesheet" href="assets/css/progressbar_barfiller.css">
-    <link rel="stylesheet" href="assets/css/gijgo.css">
     <link rel="stylesheet" href="assets/css/animate.min.css">
-    <link rel="stylesheet" href="assets/css/animated-headline.css">
+    <link rel="stylesheet" href="assets/css/hamburgers.min.css">
     <link rel="stylesheet" href="assets/css/magnific-popup.css">
     <link rel="stylesheet" href="assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="assets/css/themify-icons.css">
     <link rel="stylesheet" href="assets/css/themify-icons.css">
     <link rel="stylesheet" href="assets/css/slick.css">
     <link rel="stylesheet" href="assets/css/nice-select.css">
     <link rel="stylesheet" href="assets/css/style.css">
-
+    <link rel="stylesheet" href="assets/css/responsive.css">
 </head>
 <body>
 <!-- ? Preloader Start -->
@@ -88,105 +85,82 @@
 <!-- header end -->
 <main>
     <!-- Hero Area Start-->
-    <div class="slider-area">
-        <div class="single-slider slider-height d-flex align-items-center">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-xl-8 col-lg-9">
-                        <!-- Hero Caption -->
-                        <div class="hero__caption">
-                            <p>목소리를 텍스트로</p>
-                            <h1>온라인 속기사</h1>
-                        </div>
-                        <!--Hero form -->
-<%--                        <form action="#" class="search-box">--%>
-<%--                            <div class="input-form">--%>
-<%--                                <input type="text" placeholder="파일을 선택해주세요">--%>
-<%--                                <!-- icon search -->--%>
-<%--                                <div class="search-form">--%>
-<%--                                    <button><i class="ti-search"></i></button>--%>
-<%--                                </div>--%>
-<%--                                <!-- icon search -->--%>
-<%--                                <div class="world-form">--%>
-<%--                                    <i class="fas fa-globe"></i>--%>
-<%--                                </div>--%>
-<%--                            </div>--%>
-<%--                        </form>--%>
+    <div class="hero-area2 slider-height d-flex align-items-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="hero-cap text-center">
+                        <!-- Bredcrumb -->
+                        <nav aria-label="breadcrumb"></nav>
+                        <ol class="breadcrumb justify-content-center">
+                            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                            <li class="breadcrumb-item"><a href="#">Select File</a></li>
+                        </ol>
+                        </nav>
+                        <h2 data-animation="fadeInLeft" data-delay=".4s">파일 변환</h2>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!--Hero Area End-->
-    <!--? Pricing Card Start -->
-    <section class="pricing-card-area">
+    <!-- Hero Area End-->
+    <!-- Hero Area End-->
+    <!--? Blog Area Start-->
+    <section class="blog_area section-padding">
         <div class="container">
             <div class="row">
-                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-10">
-                    <div class="single-card text-center mb-30">
-                        <div class="card-top">
-                            <img src="assets/img/gallery/price1.png" alt="">
-                            <h4>실시간 음성인식</h4>
-                        </div>
-                        <div class="card-bottom">
-                            <a href="services.html" class="borders-btn">Get Started</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-10">
-                    <div class="single-card text-center mb-30">
-                        <div class="card-top">
-                            <img src="assets/img/gallery/price1.png" alt="">
-                            <h4>파일 선택</h4>
-                        </div>
-                        <div class="card-bottom">
-                            <a href="services.html" class="borders-btn">Get Started</a>
+                <div class="col-lg-4">
+                    <div class="blog_right_sidebar">
+                        <aside class="single_sidebar_widget search_widget">
+                            <form action="#">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <input type="text" class="form-control" placeholder='Select File'
+                                               onfocus="this.placeholder = ''"
+                                               onblur="this.placeholder = 'Select File'">
+                                        <div class="input-group-append">
+                                            <button class="btns" type="button"><i class="ti-search"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
+                                        type="submit">Start</button>
+                            </form>
+                        </aside>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-10">
+                                    <h3 class="mb-30">화자 인식 설정</h3>
+                                    <div class="default-select" id="spaerkers-select">
+                                        <select>
+                                            <option value="0">1명</option>
+                                            <option value="1">2명</option>
+                                            <option value="2">3명</option>
+                                            <option value="3">4명</option>
+                                            <option value="4">5명</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-10">
+                                    <h3 class="mb-30">언어 선택</h3>
+                                    <div class="default-select" id="lang-select">
+                                        <select>
+                                            <option value="0">한국어</option>
+                                            <option value="1">영어</option>
+                                            <option value="2">일본어</option>
+                                            <option value="3">중국어</option>
+                                            <option value="4">프랑스어</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <!-- Pricing Card End -->
-    <%--<section class="load-balancing  pt-top section-bg2" data-background="assets/img/gallery/section_bg01.png">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-xl-11 col-lg-11 col-md-10 ">
-                    <!-- Section Tittle -->
-                    <div class="section-tittle text-center mb-90">
-                        <h2>대충 설명</h2>
-                        <p>자세한 설명
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xl-4 col-lg-4 col-md-6">
-                    <div class="single-features mb-40">
-                        <div class="features-icon">
-                            <img src="assets/img/gallery/right-icon.png" alt="">
-                        </div>
-                        <div class="features-caption">
-                            <h3>주요 기능 1</h3>
-                            <p>설명</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-lg-4 col-md-6">
-                    <div class="single-features mb-40">
-                        <div class="features-icon">
-                            <img src="assets/img/gallery/right-icon.png" alt="">
-                        </div>
-                        <div class="features-caption">
-                            <h3>주요 기능 2</h3>
-                            <p>설명</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>--%>
-    <!-- Want To work End 2-->
+    <!-- Blog Area End -->
 </main>
 <footer>
     <div class="footer-wrappr  section-bg" data-background="assets/img/gallery/footer_bg.png">
@@ -221,13 +195,14 @@
     </div>
     </div>
 </footer>
+<!-- Scroll Up -->
 <div id="back-top" >
     <a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
 </div>
 
 <!-- JS here -->
 
-<script src="/src/main/resources/static/assets/js/vendor/modernizr-3.5.0.min.js"></script>
+<script src="./assets/js/vendor/modernizr-3.5.0.min.js"></script>
 <!-- Jquery, Popper, Bootstrap -->
 <script src="./assets/js/vendor/jquery-1.12.4.min.js"></script>
 <script src="./assets/js/popper.min.js"></script>
@@ -248,8 +223,6 @@
 <!-- Nice-select, sticky -->
 <script src="./assets/js/jquery.nice-select.min.js"></script>
 <script src="./assets/js/jquery.sticky.js"></script>
-<!-- Progress -->
-<script src="./assets/js/jquery.barfiller.js"></script>
 
 <!-- counter , waypoint,Hover Direction -->
 <script src="./assets/js/jquery.counterup.min.js"></script>

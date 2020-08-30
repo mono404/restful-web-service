@@ -49,6 +49,21 @@ public class CommonController {
         return new ModelAndView("home");
     }
 
+    @GetMapping(path = "/realtime")
+    public ModelAndView realTime() {
+        return new ModelAndView("realtime");
+    }
+
+    @GetMapping(path = "/selectfile")
+    public ModelAndView selectFile() {
+        return new ModelAndView("selectfile");
+    }
+
+    @GetMapping(path = "/prac1")
+    public ModelAndView prac1() {
+        return new ModelAndView("prac1");
+    }
+
     @GetMapping("/test")
     public ModelAndView fileUpload(HttpServletRequest req) {
 
