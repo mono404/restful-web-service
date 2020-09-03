@@ -54,8 +54,8 @@ public class TranslateWav {
 
             System.out.println(mp4File.getOriginalFilename());
 
-            File target = new File("./upload/" + FilenameUtils.getBaseName(mp4File.getOriginalFilename()) + ".wav");
-            System.out.println("타겟 : ./upload/" + FilenameUtils.getBaseName(mp4File.getOriginalFilename()) + ".wav");
+            File target = new File(FilenameUtils.getBaseName(mp4File.getOriginalFilename()) + ".wav");
+            System.out.println("타겟 : " + FilenameUtils.getBaseName(mp4File.getOriginalFilename()) + ".wav");
             // 오디오 포맷 속성 정의. Google speech to text api 동작 조건
             AudioAttributes audio = new AudioAttributes();
             audio.setSamplingRate(new Integer(16000)); // 샘플 레이트

@@ -2,6 +2,7 @@ package com.mono.restfulwebservice.project.controller;
 
 import com.google.cloud.storage.*;
 import com.mono.restfulwebservice.project.SpeechToText;
+import com.mono.restfulwebservice.project.TranslateWav;
 import com.mono.restfulwebservice.project.UploadObject;
 import com.mono.restfulwebservice.project.payload.FileUploadResponse;
 import com.mono.restfulwebservice.project.service.FileUploadDownloadService;
@@ -202,7 +203,7 @@ public class CommonController {
     }
 
     @PostMapping("GCUpload")
-    public String GCUpload_Submit(@RequestParam("file") MultipartFile file) throws IOException {
+    public String GCUpload_Submit(@RequestParam("file") MultipartFile file) throws Exception {
 
         String fileName = service.storeFile(file);
 
@@ -210,6 +211,19 @@ public class CommonController {
                 .path("/downloadFile/")
                 .path(fileName)
                 .toUriString();
+
+        String extension = FilenameUtils.getExtension(fileName);
+
+        if(extension.equals("wav") || extension.equals("raw"))
+        {
+            System.out.println("raw or wav 파일입니다");
+        }
+        else
+        {
+            System.out.println("wav파일이 아닙니다");
+            TranslateWav translateWav = new TranslateWav(fileName);
+            fileName = translateWav.getResult();
+        }
 
         // The ID of your GCP project
         String projectId = "my-project-1598356872302";
@@ -223,14 +237,9 @@ public class CommonController {
         // The path to your file to upload
         String filePath = "./upload/" + fileName;
 
-//        Storage storage = StorageOptions.newBuilder().setProjectId(projectId).build().getService();
-//        BlobId blobId = BlobId.of(bucketName, objectName);
-//        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
-//        storage.create(blobInfo, Files.readAllBytes(Paths.get(filePath)));
-
         UploadObject uploadObject = new UploadObject(projectId, bucketName, objectName, filePath);
 
-        return "File " + filePath + " uploaded to bucket " + bucketName + " as " + objectName;
+        return uploadObject.getResult();
 
     }
 }

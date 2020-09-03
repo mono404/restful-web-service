@@ -35,7 +35,7 @@ public class SpeechToText {
         {
             System.out.println("wav파일이 아닙니다");
             TranslateWav translateWav = new TranslateWav(filename);
-            file = translateWav.getResult();
+            file = "./upload/" + translateWav.getResult();
         }
 
     }
@@ -48,7 +48,7 @@ public class SpeechToText {
 
             // The path to the audio file to transcribe
             String fileName = filename;
-            System.out.println("경로설정" + fileName);
+            System.out.println("경로설정 " + fileName);
             // Reads the audio file into memory
             Path path = Paths.get(fileName);
             byte[] data = Files.readAllBytes(path);

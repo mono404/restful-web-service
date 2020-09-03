@@ -8,7 +8,6 @@ import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 import org.apache.commons.io.FilenameUtils;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -16,7 +15,18 @@ import java.util.ArrayList;
 
 public class UploadObject {
 
-    public UploadObject(String projectId, String bucketName, String objectName, String filePath) throws IOException {
+    String projectId;
+    String bucketName;
+    String objectName;
+    String filePath;
+    String result;
+
+    public UploadObject(String projectId, String bucketName, String objectName, String filePath) throws Exception {
+
+        this.projectId = projectId;
+        this.bucketName = bucketName;
+        this.objectName = objectName;
+        this.filePath = filePath;
 
         String fileName;
         String extension = FilenameUtils.getExtension(filePath);
@@ -24,48 +34,34 @@ public class UploadObject {
         if(extension.equals("wav") || extension.equals("raw"))
         {
             System.out.println("raw or wav 파일입니다");
-            fileName = filePath;
+            this.filePath = filePath;
         }
         else
         {
             System.out.println("wav파일이 아닙니다");
             TranslateWav translateWav = new TranslateWav(filePath);
-            fileName = translateWav.getResult();
+            this.filePath = "./upload/" + translateWav.getResult();
         }
 
         Storage storage = StorageOptions.newBuilder().setProjectId(projectId).build().getService();
         BlobId blobId = BlobId.of(bucketName, objectName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
-        storage.create(blobInfo, Files.readAllBytes(Paths.get(fileName)));
+        storage.create(blobInfo, Files.readAllBytes(Paths.get(this.filePath)));
 
         System.out.println(
-                "File " + fileName + " uploaded to bucket " + bucketName + " as " + objectName);
+                "File " + this.filePath + " uploaded to bucket " + bucketName + " as " + objectName);
+
+        String target = "gs://" + bucketName + "/" + objectName;
+        int speaker = 2;
+        transcribeDiarization(target, speaker);
 
     }
 
-    public static void uploadObject(String projectId, String bucketName, String objectName, String filePath) throws IOException {
-        // The ID of your GCP project
-        // String projectId = "your-project-id";
-
-        // The ID of your GCS bucket
-        // String bucketName = "your-unique-bucket-name";
-
-        // The ID of your GCS object
-        // String objectName = "your-object-name";
-
-        // The path to your file to upload
-        // String filePath = "path/to/your/file"
-
-        Storage storage = StorageOptions.newBuilder().setProjectId(projectId).build().getService();
-        BlobId blobId = BlobId.of(bucketName, objectName);
-        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
-        storage.create(blobInfo, Files.readAllBytes(Paths.get(filePath)));
-
-        System.out.println(
-                "File " + filePath + " uploaded to bucket " + bucketName + " as " + objectName);
+    public String getLog() {
+        return "File " + filePath + " uploaded to bucket " + bucketName + " as " + objectName;
     }
 
-    public static void transcribeDiarization(String fileName, int speaker)throws Exception {
+    public void transcribeDiarization(String fileName, int speaker)throws Exception {
         try (SpeechClient speechClient = SpeechClient.create()) {
 
             ArrayList<String> languageList = new ArrayList<>();
@@ -122,6 +118,11 @@ public class UploadObject {
 
             System.out.println(speakerWords.toString());
 
+            this.result = speakerWords.toString();
         }
+    }
+
+    public String getResult(){
+        return result;
     }
 }
