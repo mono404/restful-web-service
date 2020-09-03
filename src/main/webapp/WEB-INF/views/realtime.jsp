@@ -93,11 +93,11 @@
                         <!-- Bredcrumb -->
                         <nav aria-label="breadcrumb"></nav>
                         <ol class="breadcrumb justify-content-center">
-                            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                            <li cla199ss="breadcrumb-item"><a href="index.html">Home</a></li>
                             <li class="breadcrumb-item"><a href="#">Select File</a></li>
                         </ol>
                         </nav>
-                        <h2 data-animation="fadeInLeft" data-delay=".4s">파일 변환</h2>
+                        <h2 data-animation="fadeInLeft" data-delay=".4s">스트리밍 오디오 변환</h2>
                     </div>
                 </div>
             </div>
