@@ -2,9 +2,12 @@ package com.mono.restfulwebservice.project.controller;
 
 import com.google.cloud.storage.*;
 import com.mono.restfulwebservice.project.SpeechToText;
+import com.mono.restfulwebservice.project.UploadObject;
 import com.mono.restfulwebservice.project.payload.FileUploadResponse;
 import com.mono.restfulwebservice.project.service.FileUploadDownloadService;
 import lombok.Data;
+import net.bytebuddy.implementation.bind.MethodDelegationBinder;
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
@@ -16,14 +19,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -70,6 +71,60 @@ public class CommonController {
         return new ModelAndView("test");
     }
 
+    @PostMapping("/wavtotxt")
+    public ResponseEntity<Resource> WavToText(@RequestParam("file") MultipartFile file, HttpServletRequest req) throws Exception {
+
+        String fileName = service.storeFile(file);
+        String downUri = "./upload/" + FilenameUtils.getBaseName(file.getOriginalFilename()) + ".txt";
+        String txtName = FilenameUtils.getBaseName(file.getOriginalFilename()) + ".txt";
+
+        String fileDownloadUri_r = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/downloadFile/")
+                .path(fileName)
+                .toUriString();
+
+        System.out.println(new FileUploadResponse(fileName, fileDownloadUri_r, file.getContentType(), file.getSize()));
+
+        SpeechToText stt = new SpeechToText("./upload/" + fileName);
+
+        try{
+            OutputStream output = new FileOutputStream(downUri);
+            byte[] by = stt.getText().getBytes();
+            output.write(by);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/downloadFile/")
+                .path(txtName)
+                .toUriString();
+
+        System.out.println(new FileUploadResponse(fileName, fileDownloadUri, file.getContentType(), file.getSize()));
+
+        //return new ModelAndView("test");
+
+        Resource res = service.loadFileAsResource(txtName);
+
+        // Try to determine file's content type
+        String contentType = null;
+        try {
+            contentType = req.getServletContext().getMimeType(res.getFile().getAbsolutePath());
+        } catch (IOException ex) {
+            logger.info("Could not determine file type.");
+        }
+
+        // Fallback to the default content type if type could not be determined
+        if(contentType == null) {
+            contentType = "application/octet-stream";
+        }
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + res.getFilename() + "\"")
+                .body(res);
+    }
+
     @PostMapping("/uploadFile")
     public FileUploadResponse uploadFile(@RequestParam("file") MultipartFile file) {
         String fileName = service.storeFile(file);
@@ -82,22 +137,7 @@ public class CommonController {
         return new FileUploadResponse(fileName, fileDownloadUri, file.getContentType(), file.getSize());
     }
 
-    @PostMapping("/WavToText")
-    public String WavToText(@RequestParam("file") MultipartFile file) throws Exception {
-
-        String fileName = service.storeFile(file);
-
-        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/downloadFile/")
-                .path(fileName)
-                .toUriString();
-
-        SpeechToText stt = new SpeechToText("./upload/" + fileName);
-
-        return stt.getMessage();
-    }
-
-    @PostMapping("uploadMultipleFiles")
+    @PostMapping("/uploadMultipleFiles")
     public List<FileUploadResponse> uploadMultiFiles(@RequestParam("files") MultipartFile[] files) {
         return Arrays.asList(files)
                 .stream()
@@ -129,17 +169,36 @@ public class CommonController {
                 .body(resource);
     }
 
+    @PostMapping("/downloadFile/{fileName}")
+    public ResponseEntity<Resource> downloadFile_v2(@PathVariable String fileName, HttpServletRequest request) {
+        // Load file as Resource
+        Resource resource = service.loadFileAsResource(fileName);
+
+        // Try to determine file's content type
+        String contentType = null;
+        try {
+            contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+        } catch (IOException ex) {
+            logger.info("Could not determine file type.");
+        }
+
+        // Fallback to the default content type if type could not be determined
+        if(contentType == null) {
+            contentType = "application/octet-stream";
+        }
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
+    }
+
     @GetMapping("STTTest")
     public String STTTest() throws Exception {
 
         SpeechToText stt = new SpeechToText("./upload/test6.raw");
 
-        return stt.getMessage();
-    }
-
-    @GetMapping("GCUpload")
-    public ModelAndView GCUpload() {
-        return new ModelAndView("GCUpload");
+        return stt.getText();
     }
 
     @PostMapping("GCUpload")
@@ -164,10 +223,12 @@ public class CommonController {
         // The path to your file to upload
         String filePath = "./upload/" + fileName;
 
-        Storage storage = StorageOptions.newBuilder().setProjectId(projectId).build().getService();
-        BlobId blobId = BlobId.of(bucketName, objectName);
-        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
-        storage.create(blobInfo, Files.readAllBytes(Paths.get(filePath)));
+//        Storage storage = StorageOptions.newBuilder().setProjectId(projectId).build().getService();
+//        BlobId blobId = BlobId.of(bucketName, objectName);
+//        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
+//        storage.create(blobInfo, Files.readAllBytes(Paths.get(filePath)));
+
+        UploadObject uploadObject = new UploadObject(projectId, bucketName, objectName, filePath);
 
         return "File " + filePath + " uploaded to bucket " + bucketName + " as " + objectName;
 

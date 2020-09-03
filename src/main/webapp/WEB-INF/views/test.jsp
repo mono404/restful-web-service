@@ -9,7 +9,7 @@
 <body>
 insert
 
-<form action="/WavToText" method="POST" enctype="multipart/form-data">
+<form action="/wavtotxt" method="POST" enctype="multipart/form-data">
 
     <div>
         SpeechToText : <input type="file" name="file" id="fileOpenInput"/>

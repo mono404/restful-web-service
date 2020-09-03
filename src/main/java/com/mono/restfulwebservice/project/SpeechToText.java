@@ -8,21 +8,37 @@ import com.google.cloud.speech.v1.SpeechClient;
 import com.google.cloud.speech.v1.SpeechRecognitionAlternative;
 import com.google.cloud.speech.v1.SpeechRecognitionResult;
 import com.google.protobuf.ByteString;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import org.apache.commons.io.FilenameUtils;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class SpeechToText {
 
     String file;
+
+    public SpeechToText(String filename) throws IOException {
+
+        String extension = FilenameUtils.getExtension(filename);
+
+        if(extension.equals("wav") || extension.equals("raw"))
+        {
+            System.out.println("raw or wav 파일입니다");
+            file = filename;
+        }
+        else
+        {
+            System.out.println("wav파일이 아닙니다");
+            TranslateWav translateWav = new TranslateWav(filename);
+            file = translateWav.getResult();
+        }
+
+    }
 
     private String Stt(String filename) throws Exception
     {
@@ -63,7 +79,7 @@ public class SpeechToText {
         return null;
     }
 
-    public String getMessage() throws Exception {
+    public String getText() throws Exception {
         return Stt(file);
     }
 }
