@@ -3,6 +3,7 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+!out/artifacts/restful_web_service_jar/restful-web-service.jar
 
 ### STS ###
 .apt_generated
